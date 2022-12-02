@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const getNotes =() =>{
-   return fs.promises.readFile('./db/db.json','utf8')
+   return fs.promises.readFile('./Develop/db/db.json','utf8')
 }
 const addNewNote = (storedNotes, addNote) => {
     fs.readFile(storedNotes, 'utf8', (err, data) => {
