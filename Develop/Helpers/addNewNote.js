@@ -1,5 +1,8 @@
 const fs = require('fs');
 
+const getNotes =() =>{
+   return fs.promises.readFile('./db/db.json','utf8')
+}
 const addNewNote = (storedNotes, addNote) => {
     fs.readFile(storedNotes, 'utf8', (err, data) => {
         if (err) {
@@ -20,4 +23,4 @@ const addNewNote = (storedNotes, addNote) => {
     })
 }
 
-module.exports = addNewNote;
+module.exports = {addNewNote,getNotes};
