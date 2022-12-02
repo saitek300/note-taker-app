@@ -1,11 +1,11 @@
 const express = require('express');
 const path = require('path')
-const noteData = require('./db/db.json')
-const addNewNote = require('./Helpers/addNewNote')
+
+const { addNewNote, getNotes } = require('./Helpers/addNewNote')
 const router = express.Router()
 
 const app = express()
-const PORT = 3002;
+const PORT = process.env.PORT || 3002;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -21,21 +21,25 @@ app.get('/', (req, res) => {
 
 
 app.get('/notes', (req, res) => {
-  res.send('Hi')
-  res.sendFile(path.join(__dirname, '/public/notes.html'))
+  res.sendFile(path.join(__dirname, './public/notes.html'))
 
 });
 
-app.get('/api/notes', (req, res) => res.json(noteData));
+app.get('/api/notes', (req, res) => {
+  getNotes().then(noteData => res.json(JSON.parse(noteData)))
+
+}
+);
 
 app.post('/api/notes', (req, res) => {
-  res.json(noteData);
+
   const { title, text } = req.body
   const newNote = {
     title,
     text
   }
   addNewNote('./db/db.json', newNote)
+  getNotes().then(noteData => res.json(JSON.parse(noteData)))
 });
 
 
